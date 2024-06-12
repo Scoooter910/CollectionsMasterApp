@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace CollectionsMasterConsoleUI
 {
@@ -39,11 +40,14 @@ namespace CollectionsMasterConsoleUI
             */
 
             Console.WriteLine("All Numbers Reversed:");
+
             Array.Reverse(numberArray);
             NumberPrinter(numberArray);
 
             Console.WriteLine("---------REVERSE CUSTOM------------");
+
             ReverseArray(numberArray);
+            NumberPrinter(numberArray);
 
             Console.WriteLine("-------------------");
 
@@ -69,54 +73,62 @@ namespace CollectionsMasterConsoleUI
 
             /*   Set Up   */
             //TODO: Create an integer List
-            List<int> numberList = new List<int>();
+            var numList = new List<int>();
 
             //TODO: Print the capacity of the list to the console
-            Console.WriteLine("Capacity of the number list:");
-            Console.WriteLine(numberList.Capacity);
+            Console.WriteLine($"Capacity: {numList.Count}");
 
             //TODO: Populate the List with 50 random numbers between 0 and 50 you will need a method for this            
 
-            Populater(numberList);
+            Populater(numList);
             //TODO: Print the new capacity
-            Console.WriteLine(numberList.Capacity);
+            Console.WriteLine($"New Capacity: {numList.Capacity}");
 
             Console.WriteLine("---------------------");
 
             //TODO: Create a method that prints if a user number is present in the list
             //Remember: What if the user types "abc" accident your app should handle that!
-            Console.WriteLine("What number will you search for in the number list?");
-            int userInput = int.Parse(Console.ReadLine());
 
-            NumberChecker(numberList, userInput);
+            int userNumber;
+            bool isANumber;
+            do
+            {
+                Console.WriteLine("What number will you search for in the number list?");
+                isANumber = int.TryParse(Console.ReadLine(), out userNumber);
+
+            } while (isANumber == false);
+;
+            NumberChecker(numList, userNumber);
             Console.WriteLine("-------------------");
 
             Console.WriteLine("All Numbers:");
             //UNCOMMENT this method to print out your numbers from arrays or lists
-            NumberPrinter(numberList);
+            NumberPrinter(numList);
             Console.WriteLine("-------------------");
 
 
             //TODO: Create a method that will remove all odd numbers from the list then print results
             Console.WriteLine("Evens Only!!");
-            OddKiller(numberList);
-            NumberPrinter(numberList);
+            OddKiller(numList);
+            NumberPrinter(numList);
 
             Console.WriteLine("------------------");
 
             //TODO: Sort the list then print results
             Console.WriteLine("Sorted Evens!!");
-            NumberPrinter(numberList);
-            numberList.Sort();
+
+       
+            numList.Sort();
+            NumberPrinter(numList);
+
             Console.WriteLine("------------------");
 
             //TODO: Convert the list to an array and store that into a variable
-            int[] newArray = numberList.ToArray();
+            var myArray = numList.ToArray();
 
             //TODO: Clear the list
-            numberList.Clear();
-            NumberPrinter(numberList);
-            Console.WriteLine("There is nothing in this list");
+            numList.Clear();
+            
 
             #endregion
         }
@@ -134,7 +146,7 @@ namespace CollectionsMasterConsoleUI
 
         private static void OddKiller(List<int> numberList)
         {
-            for (int i = numberList.Count-1; i <=0; i--)
+            for (int i = numberList.Count-1; i >=0; i--)
             {
                 if (numberList[i] % 2 != 0)
                 {
@@ -146,32 +158,35 @@ namespace CollectionsMasterConsoleUI
         private static void NumberChecker(List<int> numberList, int searchNumber)
         {
             bool foundNumber = false;
-            foreach (var item in numberList)
-            {
-                if (item == searchNumber)
+            
+            
+                if (numberList.Contains(searchNumber))
                 {
                     Console.WriteLine("The number is in the list");
                     foundNumber = true;
-                    break;
+                    
                 }
-                if(foundNumber == false) 
+                else 
                 {
                     Console.WriteLine("The number is not in the list");
                 }
             }
-        }
+        
 
         private static void Populater(List<int> numberList)
         {
-            Random rng = new Random();
             
-            for (int i = 1; i < 50; i++)
+
+            while (numberList.Count <51)
             {
-                int randomNumber = rng.Next(0, 51);
-                numberList.Add(randomNumber);
+                Random rng = new Random();
+                var number = rng.Next(0, 50);
+                numberList.Add(number);
                 
             }
+            NumberPrinter(numberList);
         }
+
 
         private static void Populater(int[] numbers)
         {
@@ -179,8 +194,8 @@ namespace CollectionsMasterConsoleUI
             
             for (int i = 0; i < numbers.Length; i++)
             {
-                int randomNumber = rng.Next(0, 51);
-                numbers[i] = randomNumber;
+                numbers[i] = rng.Next(0, 51);
+                
             }
 
         }        
@@ -192,12 +207,10 @@ namespace CollectionsMasterConsoleUI
             for (int i = array.Length - 1; i >= 0; i--)
             {
                 newArray[index] = array[i];
-                i++;
+                index++;
             }
-            foreach(var item in newArray)
-                {
-                Console.WriteLine(newArray);
-                }
+            
+               
         }
 
         /// <summary>
